@@ -1,0 +1,10 @@
+scc-firewall-manager-sdk
+questionary
+pyjwt
+black
+pyyaml
+rich
+click
+email-validator
+click_option_group
+requests
