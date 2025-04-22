@@ -83,7 +83,9 @@ class MspService:
             username=f"{username}@{tenant_name}",
         )
         if user is None:
-            self.create_api_only_user(tenant_uid, username)
+            self.create_api_only_user(
+                tenant_uid=tenant_uid, username=f"{username}@{tenant_name}"
+            )
             user = self.get_user_by_name_in_tenant_in_msp_portal(
                 tenant_uid=tenant_uid, username=f"{username}@{tenant_name}"
             )

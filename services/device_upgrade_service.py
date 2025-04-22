@@ -2,7 +2,7 @@ import sys
 
 from rich.progress import SpinnerColumn, TextColumn, Progress
 from scc_firewall_manager_sdk import DeviceUpgradesApi, FtdVersionsResponse
-from scc_firewall_manager_sdk.exceptions import NotFoundException
+from scc_firewall_manager_sdk.exceptions import NotFoundException, ServiceException
 
 
 class DeviceUpgradeService:
@@ -16,7 +16,12 @@ class DeviceUpgradeService:
                     device_uid=device_uid
                 )
             )
-        except NotFoundException as e:
+        except ServiceException:
+            print(
+                "Working around known issue fixed in https://github.com/cisco-lockhart/cdo-jvm-modules/pull/3903 - this catch can be removed after 25/4/2025"
+            )
+            return None
+        except NotFoundException:
             return None
         suggested_ftd_version = None
         for ftd_version in ftd_versions_response.items:
