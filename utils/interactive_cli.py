@@ -1,9 +1,5 @@
-import sys
-
 import jwt
 import questionary
-from cdo_sdk_python import Configuration
-
 
 from utils.region_mapping import supported_regions, supported_regions_choices
 

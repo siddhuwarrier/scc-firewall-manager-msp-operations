@@ -1,7 +1,6 @@
-import sys
 from typing import List
 
-from cdo_sdk_python import CdoTransaction, ApiTokenInfo, ApiException
+from scc_firewall_manager_sdk import CdoTransaction, ApiTokenInfo
 from scc_firewall_manager_sdk import (
     MSPApi,
     MspManagedTenant,
@@ -83,9 +82,7 @@ class MspService:
             username=f"{username}@{tenant_name}",
         )
         if user is None:
-            self.create_api_only_user(
-                tenant_uid=tenant_uid, username=f"{username}@{tenant_name}"
-            )
+            self.create_api_only_user(tenant_uid=tenant_uid, username=f"{username}")
             user = self.get_user_by_name_in_tenant_in_msp_portal(
                 tenant_uid=tenant_uid, username=f"{username}@{tenant_name}"
             )

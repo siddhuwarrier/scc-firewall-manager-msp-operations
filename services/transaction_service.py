@@ -22,6 +22,6 @@ class TransactionService:
 
         if transaction.cdo_transaction_status == "ERROR":
             raise RuntimeError(
-                f"Transaction {transaction_uid} failed: {transaction.transaction_details}"
+                f"Transaction {transaction_uid} failed: {transaction.transaction_details}. Error msg: {transaction.error_message}, error code: {transaction.error_details}"
             )
         return transaction
