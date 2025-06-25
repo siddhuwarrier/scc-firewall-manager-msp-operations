@@ -1,13 +1,17 @@
 from questionary import Choice
 
-supported_regions = ["us", "eu", "au", "apj", "in", "int"]
+supported_regions = ["us", "eu", "au", "apj", "in", "int", "localhost"]
 supported_regions_choices = [
     Choice(value="us", title="United States"),
     Choice(value="eu", title="Europe"),
-    Choice(value="aus", title="Australia"),
+    Choice(value="au", title="Australia"),
     Choice(value="apj", title="Asia Pacific Japan"),
     Choice(value="in", title="India"),
     Choice(value="int", title="Staging (Cisco Developers only)"),
+    Choice(
+        value="localhost",
+        title="Localhost (Cisco Developers running Public API services only)",
+    ),
 ]
 
 

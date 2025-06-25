@@ -1,6 +1,3 @@
-import sys
-
-from rich.progress import SpinnerColumn, TextColumn, Progress
 from scc_firewall_manager_sdk import DeviceUpgradesApi, FtdVersionsResponse
 from scc_firewall_manager_sdk.exceptions import NotFoundException, ServiceException
 

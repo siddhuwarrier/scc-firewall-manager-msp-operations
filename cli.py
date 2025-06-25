@@ -248,6 +248,35 @@ def write_output_to_csv(output_file: str, csv_rows: list) -> None:
     console.print(f"Results written to {output_file}", style="green")
 
 
+@click.command(name="add-tenants")
+@click.option(
+    "--tenant-uids",
+    type=click.Path(exists=True, dir_okay=False, readable=True, resolve_path=True),
+    help="Path to a file containing tenant UIDs, one per line.",
+)
+@click.pass_context
+def add_tenants_to_msp(ctx: any, tenant_uids: str) -> None:
+    if tenant_uids:
+        with open(tenant_uids, "r", encoding="utf-8") as file:
+            tenant_uid_list = [line.strip() for line in file if line.strip()]
+        ctx.obj["tenant_uids"] = tenant_uid_list
+    else:
+        ctx.obj["tenant_uids"] = []
+
+    with live:
+        tenants_task = overall_progress.add_task(
+            "Adding tenants...", total=len(tenant_uids), tenant_name="TBD"
+        )
+        with ApiClient(
+            Configuration(host=ctx.obj["base_url"], access_token=ctx.obj["api_token"])
+        ) as api_client:
+            msp_service = MspService(api_client)
+            for tenant_uid in ctx.obj["tenant_uids"]:
+                overall_progress.update(task_id=tenants_task, tenant_name=tenant_uid)
+                msp_service.add_tenant(tenant_uid)
+                overall_progress.update(tenants_task, advance=1)
+
+
 @click.command(name="get-suggested-ftd-versions")
 @click.option(
     "--output-file",
@@ -297,5 +326,6 @@ def get_suggested_ftd_versions(ctx: any, output_file: str) -> None:
 
 
 cli.add_command(get_suggested_ftd_versions)
+cli.add_command(add_tenants_to_msp)
 if __name__ == "__main__":
     cli(obj={})

@@ -1,7 +1,7 @@
 import sys
 from typing import List
 
-from cdo_sdk_python import CdoTransaction, ApiTokenInfo
+from cdo_sdk_python import CdoTransaction, ApiTokenInfo, ApiException
 from scc_firewall_manager_sdk import (
     MSPApi,
     MspManagedTenant,
@@ -96,3 +96,18 @@ class MspService:
             )
         )
         return api_token_info.api_token
+
+    def add_tenant(self, tenant_uid: str):
+        """
+        Add a tenant to the MSP portal.
+        """
+        try:
+            cdo_transaction = self.msp_api.add_tenant_to_msp_portal(
+                tenant_uid=tenant_uid
+            )
+            self.transaction_service.wait_for_transaction_to_finish(
+                cdo_transaction.transaction_uid
+            )
+        except Exception as e:
+            if e.reason != "Conflict":
+                raise e
